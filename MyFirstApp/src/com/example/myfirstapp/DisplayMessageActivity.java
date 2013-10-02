@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -24,6 +25,10 @@ public class DisplayMessageActivity extends Activity {
             // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        else {
+        	//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
      
@@ -59,10 +64,33 @@ public class DisplayMessageActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
+		
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_search:
+            openSearch();
+            return true;
+        case R.id.action_settings:
+            openSettings();
+            return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+		getMenuInflater().inflate(R.menu.main_activity_actions, menu);
+        return true;
+	}
+    
+    private void openSearch() {
+        Toast.makeText(this, "Search button pressed", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void openSettings() {
+        Toast.makeText(this, "Settings button pressed", Toast.LENGTH_SHORT).show();
+    }
+	
 
 }

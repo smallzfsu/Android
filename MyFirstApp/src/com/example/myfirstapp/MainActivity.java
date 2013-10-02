@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -34,4 +36,5 @@ public class MainActivity extends Activity {
     	intent.putExtra(EXTRA_MESSAGE, message);
     	startActivity(intent);
 }
+    
 }
