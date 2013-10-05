@@ -1,7 +1,15 @@
 package com.example.myfirstapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.ActionBar.TabListener;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -12,8 +20,10 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 
-public class DisplayMessageActivity extends Activity {
+public class DisplayMessageActivity extends Activity implements TabListener {
 
+	List<Fragment> fragList = new ArrayList<Fragment>();
+	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +34,22 @@ public class DisplayMessageActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
             getActionBar().setDisplayHomeAsUpEnabled(true);
+            
+            ActionBar bar = getActionBar();
+            bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            
+            for (int i=1; i <= 3; i++) {
+	            Tab tab = bar.newTab();
+	            tab.setText("Tab " + i);
+	            tab.setTabListener(this);
+	            bar.addTab(tab);
+            }
         }
         else {
         	//getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        
+        
         
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -92,5 +114,40 @@ public class DisplayMessageActivity extends Activity {
         Toast.makeText(this, "Settings button pressed", Toast.LENGTH_SHORT).show();
     }
 	
+    @Override
+    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+        Fragment f = null;
+        TabFragment tf = null;
 
+        if (fragList.size() > tab.getPosition())
+                fragList.get(tab.getPosition());
+
+        if (f == null) {
+            tf = new TabFragment();
+            Bundle data = new Bundle();
+            data.putInt("idx",  tab.getPosition());
+            tf.setArguments(data);
+            fragList.add(tf);
+        }
+        else
+            tf = (TabFragment) f;
+
+        ft.replace(android.R.id.content, tf);
+
+    }
+
+    @Override
+    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+        if (fragList.size() > tab.getPosition()) {
+            ft.remove(fragList.get(tab.getPosition()));
+        }
+
+    }
+
+
+	@Override
+	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 }
